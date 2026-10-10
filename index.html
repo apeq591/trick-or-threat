@@ -81,9 +81,9 @@
    transform: translate(-50%, -50%);
    width: 300px;
    height: 300px;
-   border-radius: 50%
+   border-radius: 50%;
    border: 10px solid #111;
-   background: radical-gradient(circle, #2a2a3a, black 70%);
+   background: radial-gradient(circle, #2a2a3a, black 70%);
    box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.85);
    font-size: 150px;
    line-height: 300px;
@@ -114,17 +114,16 @@
   <button>Open the door</button>
   <button>Porch light off</button>
  <script>
-  let peephole = document.getElementByld("peephole");
-  let view = document.getElementByld("view");
+  let peephole = document.getElementById("peephole");
+  let view = document.getElementById("view");
 
   peephole.onclick = function() {
-   view.style.display = "none";
+   view.style.display = "block";
   };
 
   view.onclick = function() {
    view.style.display = "none";
   };
- </script>
  </script>
 </body>
 </html>
