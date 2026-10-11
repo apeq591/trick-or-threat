@@ -261,6 +261,44 @@
   justify-content: center;
   align-items: center;
 }
+  #note {
+  position: absolute;
+  left: 98px;
+  top: -38px;
+  width: 34px;
+  height: 26px;
+  background: linear-gradient(#f3ecd8, #cfc3a0);
+  transform: rotate(-6deg);
+  box-shadow: 0 2px 4px black;
+}
+#openme {
+  position: absolute;
+  left: 86px;
+  top: -62px;
+  font-size: 12px;
+  color: #f3ecd8;
+  animation: pulse 1.5s infinite;
+  pointer-events: none;
+}
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+#paper {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-2deg);
+  width: 280px;
+  padding: 20px 24px;
+  background: linear-gradient(#f3ecd8, #e2d6b5);
+  color: #2a1a0e;
+  text-align: left;
+  box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.85);
+  z-index: 15;
+}
  
 
   
@@ -290,6 +328,8 @@
    <div id="candle"></div>
    <div id="flame"></div>
    <div id="holder"></div>
+      <div id="note"></div>
+   <div id="openme">open me</div>
                     </div>
   <div id="frame"></div>
               
@@ -297,6 +337,15 @@
  <div id="light"></div>
  <div id="view">
   <div id="visitor">🎃</div>
+ </div>
+  <div id="paper">
+  <h2>Things you need to know</h2>
+  <ul>
+   <li>Clue 1 goes here</li>
+   <li>Clue 2 goes here</li>
+   <li>Clue 3 goes here</li>
+  </ul>
+  <p>Tap to close</p>
  </div>
  <div id="floor">
    <p id="message">All quiet... for now.</p>
@@ -335,7 +384,23 @@
     knockSound.pause();
     knockSound.currentTime = 0;
    });
-   setTimeout(knock, 2000);
+  };
+  let note = document.getElementById("note");
+  let paper = document.getElementById("paper");
+  let openme = document.getElementById("openme");
+  let firstTime = true;
+
+  note.onclick = function() {
+   paper.style.display = "block";
+   openme.style.display = "none";
+  };
+
+  paper.onclick = function() {
+   paper.style.display = "none";
+   if (firstTime) {
+    firstTime = false;
+    setTimeout(knock, 2000);
+   }
   };
  </script>
 </body>
