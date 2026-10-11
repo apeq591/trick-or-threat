@@ -236,6 +236,19 @@
   border-radius: 2px;
   box-shadow: 0 3px 2px rgba(0, 0, 0, 0.4);
 }
+ .knocking .panel,
+.knocking #knob,
+.knocking #letterbox,
+.knocking #peephole {
+  animation: shake 0.2s 3;
+}
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+  100% { transform: translateX(0); }
+}
+ 
 
   
  </style>
@@ -269,7 +282,7 @@
   <div id="visitor">🎃</div>
  </div>
  <div id="floor">
-  <p>Someone is knocking...</p>
+   <p id="message">All quiet... for now.</p>
   <button>Open the door</button>
   <button>Porch light off</button>
 </div>
@@ -284,6 +297,17 @@
   view.onclick = function() {
    view.style.display = "none";
   };
+ let message = document.getElementById("message");
+
+  function knock() {
+   document.body.classList.add("knocking");
+   message.textContent = "Someone is knocking...";
+   setTimeout(function() {
+    document.body.classList.remove("knocking");
+   }, 1000);
+  }
+
+  setTimeout(knock, 2000); 
  </script>
 </body>
 </html>
