@@ -307,7 +307,17 @@
    }, 1000);
   }
 
-  setTimeout(knock, 2000); 
+    let start = document.getElementById("start");
+  let knockSound = new Audio("khemrajdotin%20%E2%80%93%20knock.mp3");
+
+  document.getElementById("startbutton").onclick = function() {
+   start.style.display = "none";
+   knockSound.play().then(function() {
+    knockSound.pause();
+    knockSound.currentTime = 0;
+   });
+   setTimeout(knock, 2000);
+  };
  </script>
 </body>
 </html>
