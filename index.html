@@ -357,16 +357,17 @@
   <div id="paper">
   <h2>Things you need to know</h2>
   <ul>
-   <li>Clue 1 goes here</li>
-   <li>Clue 2 goes here</li>
-   <li>Clue 3 goes here</li>
+   <li>The house next door has been empty since summer.</li>
+   <li>Your cousin Sam is coming at 10, dressed as a skeleton.</li>
+   <li>The sweets are hidden in the kitchen cupboard. Don't give them all away!</li>
+   <li>Your best friend Ava is in Spain this week.</li>
   </ul>
   <p>Tap to close</p>
  </div>
  <div id="floor">
    <p id="message">All quiet... for now.</p>
-  <button>Open the door</button>
-  <button>Porch light off</button>
+  <button id="openbutton">Open the door</button>
+  <button id="lightbutton">Porch light off</button>
 </div>
  <script>
   let peephole = document.getElementById("peephole");
@@ -385,7 +386,11 @@
    document.body.classList.add("knocking");
    knockSound.currentTime = 0;
    knockSound.play();
-   message.textContent = "Someone is knocking...";
+  let current = visitors[turn];
+   clock.textContent = current.time;
+   visitor.textContent = current.face;
+   message.textContent = current.says;
+   waiting = true;
    setTimeout(function() {
     document.body.classList.remove("knocking");
    }, 1000);
@@ -418,6 +423,60 @@
     setTimeout(knock, 2000);
    }
   };
+  let visitors = [
+   { time: "7:00 PM", face: "🧛", says: "Trick or treat! I like your pumpkin!", fake: false },
+   { time: "7:40 PM", face: "🧙", says: "Hi, I live next door. Can I come in and use your phone?", fake: true },
+   { time: "8:20 PM", face: "👻", says: "BOO! ...sorry, did I scare you?", fake: false },
+   { time: "9:00 PM", face: "💀", says: "It's me, Sam! I'm early, let me in.", fake: true },
+   { time: "9:30 PM", face: "🦸", says: "Trick or treat! My mum's waiting at the gate.", fake: false },
+   { time: "10:00 PM", face: "💀", says: "Hey, it's Sam! Did your mum tell you I was coming?", fake: false },
+   { time: "10:45 PM", face: "🤡", says: "Your mum said you'd give us the big bag of sweets.", fake: true },
+   { time: "11:30 PM", face: "👧", says: "It's me, Ava! Open up, it's freezing!", fake: true }
+  ];
+  let turn = 0;
+  let waiting = false;
+  let clock = document.getElementById("clock");
+  let visitor = document.getElementById("visitor");
+  let openbutton = document.getElementById("openbutton");
+  let lightbutton = document.getElementById("lightbutton");
+
+  openbutton.onclick = function() {
+   if (waiting == false) {
+    return;
+   }
+   waiting = false;
+   if (visitors[turn].fake) {
+    message.textContent = "That was NOT a kid... 😱";
+   } else {
+    message.textContent = "You gave them some sweets 🍬";
+   }
+   next();
+  };
+
+  lightbutton.onclick = function() {
+   if (waiting == false) {
+    return;
+   }
+   waiting = false;
+   if (visitors[turn].fake) {
+    message.textContent = "Phew. Whatever it was, it's gone.";
+   } else {
+    message.textContent = "They walk away sadly...";
+   }
+   next();
+  };
+
+  function next() {
+   turn = turn + 1;
+   if (turn < visitors.length) {
+    setTimeout(knock, 3000);
+   } else {
+    setTimeout(function() {
+     clock.textContent = "12:00 AM";
+     message.textContent = "MIDNIGHT. You survived!";
+    }, 3000);
+   }
+  }
  </script>
 </body>
 </html>
