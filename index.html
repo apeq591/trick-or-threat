@@ -357,8 +357,6 @@
   to { transform: scaleX(1); }
 }
 
-STEP 9: Replace lines 102 to 104 (the #visitor{ block) with:
-
   #visitor {
    display: block;
    height: 230px;
@@ -484,14 +482,14 @@ STEP 9: Replace lines 102 to 104 (the #visitor{ block) with:
    }
   };
   let visitors = [
-   { time: "7:00 PM", face: "🧛", says: "Trick or treat! I like your pumpkin!", fake: false },
-   { time: "7:40 PM", face: "🧙", says: "Hi, I live next door. Can I come in and use your phone?", fake: true },
-   { time: "8:20 PM", face: "👻", says: "BOO! ...sorry, did I scare you?", fake: false },
-   { time: "9:00 PM", face: "💀", says: "It's me, Sam! I'm early, let me in.", fake: true },
-   { time: "9:30 PM", face: "🦸", says: "Trick or treat! My mum's waiting at the gate.", fake: false },
-   { time: "10:00 PM", face: "💀", says: "Hey, it's Sam! Did your mum tell you I was coming?", fake: false },
-   { time: "10:45 PM", face: "🤡", says: "Your mum said you'd give us the big bag of sweets.", fake: true },
-   { time: "11:30 PM", face: "👧", says: "It's me, Ava! Open up, it's freezing!", fake: true }
+   { time: "7:00 PM", face: "vampire.png", says: "Trick or treat! I like your pumpkin!", fake: false },
+   { time: "7:40 PM", face: "witch.png", says: "Hi, I live next door. Can I come in and use your phone?", fake: true },
+   { time: "8:20 PM", face: "ghost.png", says: "BOO! ...sorry, did I scare you?", fake: false },
+   { time: "9:00 PM", face: "skeleton.png", says: "It's me, Sam! I'm early, let me in.", fake: true },
+   { time: "9:30 PM", face: "hero.png", says: "Trick or treat! My mum's waiting at the gate.", fake: false },
+   { time: "10:00 PM", face: "skeleton.png", says: "Hey, it's Sam! Did your mum tell you I was coming?", fake: false },
+   { time: "10:45 PM", face: "clown.png", says: "Your mum said you'd give us the big bag of sweets.", fake: true },
+   { time: "11:30 PM", face: "ava.png", says: "It's me, Ava! Open up, it's freezing!", fake: true }
   ];
   let turn = 0;
   let waiting = false;
