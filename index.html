@@ -489,6 +489,7 @@
    <p>Your mission is to survive until midnight.</p>
    <p>There will be trick-or-treaters at your door... but not everyone is human.</p>
    <p>Check the peephole. Open the door for real kids. Turn the porch light off for anything else.</p>
+         <p>🔊 Turn your volume up and make sure your device isn't on mute!</p>
   </div>
   <button id="startbutton">START</button>
  </div>
@@ -583,12 +584,17 @@
 
     let start = document.getElementById("start");
   let knockSound = new Audio("khemrajdotin%20%E2%80%93%20knock.mp3");
+   let scream = new Audio("scream.mp3");
 
   document.getElementById("startbutton").onclick = function() {
    start.style.display = "none";
    knockSound.play().then(function() {
     knockSound.pause();
     knockSound.currentTime = 0;
+   });
+    scream.play().then(function() {
+    scream.pause();
+    scream.currentTime = 0;
    });
   };
    document.getElementById("againbutton").onclick = function() {
@@ -795,6 +801,8 @@ let sanity = 100;
     girl.style.top = "-10vh";
     girl.style.transform = "translateX(-50%)";
     girl.style.zIndex = "30";
+     scream.currentTime = 0;
+    scream.play();
    }, 3300);
 
    setTimeout(function() {
