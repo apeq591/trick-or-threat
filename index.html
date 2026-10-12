@@ -311,6 +311,7 @@
   border: 10px solid transparent;
   border-bottom: 0;
   border-top-color: #f3ecd8;
+}
   #note {
   position: absolute;
   left: 98px;
@@ -523,6 +524,7 @@
       <div id="note"></div>
    <div id="openme">open me</div>
                     </div>
+   <div id="bubble"></div>
    <div id="frame"><div id="face"></div></div>
   <div id="clock">7:00 PM</div>
               
@@ -570,17 +572,35 @@
   let current = visitors[turn];
    clock.textContent = current.time;
    visitor.src = current.face;
+    message.textContent = "Someone's at the door...";
+   bubble.textContent = current.says;
+   bubble.style.display = "block";
+   setTimeout(function() {
+    speak(current.says, current.fake);
+   }, 1200);
    message.textContent = current.says;
    waiting = true;
    setTimeout(function() {
     document.body.classList.remove("knocking");
    }, 1000);
+    function speak(words, fake) {
+   let voice = new SpeechSynthesisUtterance(words);
+   if (fake) {
+    voice.pitch = 0.1;
+    voice.rate = 0.6;
+   } else {
+    voice.pitch = 1.8;
+    voice.rate = 1.1;
+   }
+   speechSynthesis.speak(voice);
+  }
   }
 
     let start = document.getElementById("start");
   let knockSound = new Audio("khemrajdotin%20%E2%80%93%20knock.mp3");
 
   document.getElementById("startbutton").onclick = function() {
+    speechSynthesis.speak(new SpeechSynthesisUtterance(""));
    start.style.display = "none";
    knockSound.play().then(function() {
     knockSound.pause();
@@ -637,6 +657,7 @@ let sanity = 100;
   let splat1 = document.getElementById("splat1");
   let splat2 = document.getElementById("splat2");
    let dark = document.getElementById("dark");
+   let bubble = document.getElementById("bubble");
   let girl = document.getElementById("girl");
 
   function changeSanity(amount) {
@@ -700,6 +721,7 @@ let sanity = 100;
    if (waiting == false) {
     return;
    }
+    bubble.style.display = "none";
    waiting = false;
    outsideimg.src = visitors[turn].face;
    outside.style.display = "block";
@@ -720,6 +742,7 @@ let sanity = 100;
    if (waiting == false) {
     return;
    }
+    bubble.style.display = "none";
    waiting = false;
    light.style.opacity = "0.1";
    light.style.animation = "none";
