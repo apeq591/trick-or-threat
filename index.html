@@ -575,31 +575,16 @@
     message.textContent = "Someone's at the door...";
    bubble.textContent = current.says;
    bubble.style.display = "block";
-   setTimeout(function() {
-    speak(current.says, current.fake);
-   }, 1200);
    waiting = true;
    setTimeout(function() {
     document.body.classList.remove("knocking");
    }, 1000);
-    function speak(words, fake) {
-   let voice = new SpeechSynthesisUtterance(words);
-   if (fake) {
-    voice.pitch = 0.1;
-    voice.rate = 0.6;
-   } else {
-    voice.pitch = 1.8;
-    voice.rate = 1.1;
-   }
-   speechSynthesis.speak(voice);
-  }
   }
 
     let start = document.getElementById("start");
   let knockSound = new Audio("khemrajdotin%20%E2%80%93%20knock.mp3");
 
   document.getElementById("startbutton").onclick = function() {
-    speechSynthesis.speak(new SpeechSynthesisUtterance(""));
    start.style.display = "none";
    knockSound.play().then(function() {
     knockSound.pause();
