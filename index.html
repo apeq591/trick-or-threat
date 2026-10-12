@@ -406,6 +406,22 @@
   top: 40%;
   width: 220px;
 }
+    {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.55);
+  z-index: 6;
+}
+#girl {
+  display: none;
+  position: fixed;
+  z-index: 7;
+  pointer-events: none;
+}
 
  
 
@@ -421,6 +437,8 @@
   <button id="startbutton">START</button>
  </div>
  <div id="vignette"></div>
+   <div id="dark"></div>
+ <img id="girl" src="girl.png" alt="">
   <img class="splat" id="splat1" src="splat1.png" alt="">
  <img class="splat" id="splat2" src="splat2.png" alt="">
   <h1>Trick or Threat</h1>
@@ -555,6 +573,8 @@ let sanity = 100;
   let face = document.getElementById("face");
   let splat1 = document.getElementById("splat1");
   let splat2 = document.getElementById("splat2");
+   let dark = document.getElementById("dark");
+  let girl = document.getElementById("girl");
 
   function changeSanity(amount) {
    sanity = sanity + amount;
@@ -660,7 +680,12 @@ let sanity = 100;
    }
    turn = turn + 1;
    if (turn < visitors.length) {
-    setTimeout(knock, 3000);
+    if (sanity < 50 && Math.random() < 0.5) {
+     setTimeout(jumpscare, 300);
+     setTimeout(knock, 5500);
+    } else {
+     setTimeout(knock, 3000);
+    } 
    } else {
     setTimeout(function() {
      clock.textContent = "12:00 AM";
@@ -668,6 +693,46 @@ let sanity = 100;
     }, 3000);
    }
   }
+   function jumpscare() {
+   dark.style.display = "block";
+   girl.style.display = "block";
+   girl.style.height = "180px";
+   girl.style.left = "";
+   girl.style.right = "12%";
+   girl.style.top = "";
+   girl.style.bottom = "30%";
+   girl.style.transform = "";
+   girl.style.zIndex = "7";
+
+   setTimeout(function() {
+    girl.style.height = "380px";
+    girl.style.right = "";
+    girl.style.left = "10%";
+    girl.style.bottom = "15%";
+   }, 1000);
+
+   setTimeout(function() {
+    girl.style.display = "none";
+    dark.style.display = "none";
+   }, 1800);
+
+   setTimeout(function() {
+    dark.style.display = "block";
+    girl.style.display = "block";
+    girl.style.height = "260vh";
+    girl.style.left = "50%";
+    girl.style.bottom = "";
+    girl.style.top = "-10vh";
+    girl.style.transform = "translateX(-50%)";
+    girl.style.zIndex = "30";
+   }, 3300);
+
+   setTimeout(function() {
+    girl.style.display = "none";
+    dark.style.display = "none";
+   }, 3800);
+  }
+
 
   
  </script>
