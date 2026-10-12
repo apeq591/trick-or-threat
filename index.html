@@ -792,6 +792,10 @@ let sanity = 100;
     girl.style.display = "none";
     dark.style.display = "none";
    }, 1800);
+     setTimeout(function() {
+    scream.currentTime = 0;
+    scream.play();
+   }, 3200);
 
    setTimeout(function() {
     dark.style.display = "block";
@@ -802,7 +806,7 @@ let sanity = 100;
     girl.style.top = "-10vh";
     girl.style.transform = "translateX(-50%)";
     girl.style.zIndex = "30";
-     scream.currentTime = 0;
+   scream.currentTime = 0;
     scream.play();
    }, 3300);
 
