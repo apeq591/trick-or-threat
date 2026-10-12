@@ -287,6 +287,30 @@
   color: orange;
   margin: 6px 0;
 }
+   #bubble {
+  display: none;
+  position: absolute;
+  left: 30%;
+  top: 25px;
+  transform: translateX(-50%);
+  width: 190px;
+  padding: 10px 12px;
+  background-color: #f3ecd8;
+  color: #1a120c;
+  font-size: 14px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px black;
+  z-index: 3;
+  pointer-events: none;
+}
+#bubble::after {
+  content: "";
+  position: absolute;
+  left: 64%;
+  bottom: -10px;
+  border: 10px solid transparent;
+  border-bottom: 0;
+  border-top-color: #f3ecd8;
   #note {
   position: absolute;
   left: 98px;
