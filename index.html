@@ -249,7 +249,7 @@
   75% { transform: translateX(3px); }
   100% { transform: translateX(0); }
 }
-  #start {
+    #start, #end {
   position: fixed;
   top: 0;
   left: 0;
@@ -261,6 +261,16 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+   #end {
+  display: none;
+}
+#died {
+  font-family: 'Creepster', cursive;
+  color: red;
+  font-size: 50px;
+  margin-top: 0;
+  text-shadow: 0 0 20px darkred;
 }
   #note {
   position: absolute;
@@ -436,6 +446,11 @@
   <h1>Trick or Threat</h1>
   <button id="startbutton">START</button>
  </div>
+   <div id="end">
+  <h1>Trick or Threat</h1>
+  <h2 id="died">YOU DIED</h2>
+  <button id="againbutton">PLAY AGAIN</button>
+ </div>
  <div id="vignette"></div>
    <div id="dark"></div>
  <img id="girl" src="girl.png" alt="">
@@ -526,6 +541,9 @@
     knockSound.pause();
     knockSound.currentTime = 0;
    });
+  };
+   document.getElementById("againbutton").onclick = function() {
+   location.reload();
   };
   let note = document.getElementById("note");
   let paper = document.getElementById("paper");
@@ -674,7 +692,7 @@ let sanity = 100;
   function next() {
    if (sanity == 0) {
     setTimeout(function() {
-     message.textContent = "Your sanity is gone... GAME OVER";
+     document.getElementById("end").style.display = "flex";
     }, 2000);
     return;
    }
