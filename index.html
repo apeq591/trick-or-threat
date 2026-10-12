@@ -363,6 +363,49 @@
    margin: 35px auto 0;
    filter: blur(1px);
   }
+   #eyes {
+  display: none;
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  background: radial-gradient(circle at 35% 50%, red 2px, transparent 4px), radial-gradient(circle at 65% 50%, red 2px, transparent 4px), black;
+  animation: blink 4s infinite;
+}
+@keyframes blink {
+  0% { opacity: 1; }
+  95% { opacity: 1; }
+  97% { opacity: 0; }
+  100% { opacity: 1; }
+}
+#table, #frame {
+  transition: transform 1s;
+}
+#face {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background: url("portrait.png") center / cover;
+  animation: fadein 3s;
+}
+.splat {
+  display: none;
+  position: fixed;
+  opacity: 0.85;
+  filter: brightness(0.6);
+  pointer-events: none;
+  z-index: 4;
+  animation: fadein 2s;
+}
+#splat1 {
+  left: 3%;
+  top: 6%;
+  width: 260px;
+}
+#splat2 {
+  right: 4%;
+  top: 40%;
+  width: 220px;
+}
 
  
 
@@ -378,13 +421,15 @@
   <button id="startbutton">START</button>
  </div>
  <div id="vignette"></div>
+  <img class="splat" id="splat1" src="splat1.png" alt="">
+ <img class="splat" id="splat2" src="splat2.png" alt="">
   <h1>Trick or Threat</h1>
  <div id="door">
   <div class="panel" id="panel1"></div>
   <div class="panel" id="panel2"></div>
   <div class="hinge" id="hinge1"></div>
 <div class="hinge" id="hinge2"></div>
-<div id="letterbox"></div>
+<div id="letterbox"><div id="eyes"></div></div>
   <div id="outside"><img id="outsideimg" alt=""></div>
   <div id="peephole"></div>
   <div id="knob"></div>
@@ -400,7 +445,7 @@
       <div id="note"></div>
    <div id="openme">open me</div>
                     </div>
-  <div id="frame"></div>
+   <div id="frame"><div id="face"></div></div>
   <div id="clock">7:00 PM</div>
               
  </div>
@@ -503,6 +548,13 @@ let sanity = 100;
   let toggle = document.getElementById("toggle");
   let outside = document.getElementById("outside");
   let outsideimg = document.getElementById("outsideimg");
+   let flame = document.getElementById("flame");
+  let eyes = document.getElementById("eyes");
+  let table = document.getElementById("table");
+  let frame = document.getElementById("frame");
+  let face = document.getElementById("face");
+  let splat1 = document.getElementById("splat1");
+  let splat2 = document.getElementById("splat2");
 
   function changeSanity(amount) {
    sanity = sanity + amount;
@@ -520,6 +572,7 @@ let sanity = 100;
    } else {
     fill.style.backgroundColor = "limegreen";
    }
+    updateHouse()
   }
    function updateHouse() {
    if (sanity < 95) {
