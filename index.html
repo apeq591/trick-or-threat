@@ -521,6 +521,44 @@ let sanity = 100;
     fill.style.backgroundColor = "limegreen";
    }
   }
+   function updateHouse() {
+   if (sanity < 95) {
+    table.style.transform = "rotate(4deg)";
+   } else {
+    table.style.transform = "";
+   }
+   if (sanity < 85) {
+    flame.style.display = "none";
+   } else {
+    flame.style.display = "block";
+   }
+   if (sanity < 70) {
+    eyes.style.display = "block";
+    setTimeout(function() {
+     eyes.style.display = "none";
+    }, 5000);
+   }
+   if (sanity < 60) {
+    frame.style.transform = "rotate(-9deg)";
+   } else {
+    frame.style.transform = "";
+   }
+   if (sanity < 50) {
+    splat1.style.display = "block";
+   } else {
+    splat1.style.display = "none";
+   }
+   if (sanity < 35) {
+    face.style.display = "block";
+   } else {
+    face.style.display = "none";
+   }
+   if (sanity < 20) {
+    splat2.style.display = "block";
+   } else {
+    splat2.style.display = "none";
+   }
+  }
 
   openbutton.onclick = function() {
    if (waiting == false) {
