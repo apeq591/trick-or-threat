@@ -477,6 +477,17 @@
   background-color: rgba(0, 0, 0, 0.55);
   z-index: 6;
 }
+#flicker {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0;
+  z-index: 15;
+  pointer-events: none;
+}
 #girl {
   display: none;
   position: fixed;
@@ -512,6 +523,7 @@
  </div>
  <div id="vignette"></div>
    <div id="dark"></div>
+ <div id="flicker"></div>
  <img id="girl" src="girl.png" alt="">
   <img class="splat" id="splat1" src="splat1.png" alt="">
  <img class="splat" id="splat2" src="splat2.png" alt="">
@@ -565,8 +577,18 @@
   let peephole = document.getElementById("peephole");
   let view = document.getElementById("view");
 
+  let peeked = false;
   peephole.onclick = function() {
    view.style.display = "block";
+   if (waiting && visitors[turn].fake && peeked == false && turn >= 2) {
+    peeked = true;
+    setTimeout(function() {
+     visitor.src = "girl.png";
+    }, 900);
+    setTimeout(function() {
+     visitor.src = visitors[turn].face;
+    }, 1050);
+   }
   };
 
   view.onclick = function() {
@@ -598,6 +620,8 @@
   let knockSound = new Audio("khemrajdotin%20%E2%80%93%20knock.mp3");
    let scream = new Audio("scream.mp3");
    let click = new Audio("click.mp3");
+   let heartbeat = new Audio("heartbeat.mp3");
+   heartbeat.loop = true;
 
   document.getElementById("startbutton").onclick = function() {
    start.style.display = "none";
@@ -612,6 +636,10 @@
    click.play().then(function() {
     click.pause();
     click.currentTime = 0;
+   });
+   heartbeat.play().then(function() {
+    heartbeat.pause();
+    heartbeat.currentTime = 0;
    });
   };
    document.getElementById("againbutton").onclick = function() {
@@ -689,6 +717,12 @@ let sanity = 100;
   }
    function updateHouse() {
    let creep = Math.min(sanity, 100 - turn * 10);
+   if (creep < 50 && heartbeat.paused) {
+    heartbeat.play();
+   }
+   if (creep < 25) {
+    heartbeat.playbackRate = 1.5;
+   }
    if (creep < 95) {
     table.style.transform = "rotate(4deg)";
    } else {
@@ -775,7 +809,21 @@ let sanity = 100;
 
   function next() {
    if (sanity == 0) {
+    heartbeat.pause();
     setTimeout(function() {
+     scream.currentTime = 0;
+     scream.play();
+     dark.style.display = "block";
+     girl.style.display = "block";
+     girl.style.height = "260vh";
+     girl.style.left = "50%";
+     girl.style.bottom = "";
+     girl.style.top = "-10vh";
+     girl.style.transform = "translateX(-50%)";
+     girl.style.zIndex = "30";
+    }, 700);
+    setTimeout(function() {
+     girl.style.display = "none";
      document.getElementById("end").style.display = "flex";
     }, 2000);
     return;
@@ -787,6 +835,9 @@ let sanity = 100;
      scared = true;
      setTimeout(jumpscare, 300);
      setTimeout(knock, 5500);
+    } else if (visitors[turn - 1].fake && light.style.opacity == "0.1" && Math.random() < 0.6) {
+     setTimeout(bang, 1200);
+     setTimeout(knock, 5000);
     } else {
      setTimeout(knock, 3000);
     } 
@@ -798,11 +849,38 @@ let sanity = 100;
       document.getElementById("died").textContent = "YOU SURVIVED";
       document.getElementById("died").style.color = "orange";
       document.body.style.filter = "none";
+      heartbeat.pause();
       document.getElementById("end").style.display = "flex";
      }, 2500);
     }, 3000);
    }
   }
+   function bang() {
+   document.body.classList.add("knocking");
+   knockSound.currentTime = 0;
+   knockSound.play();
+   message.textContent = "...it's still out there.";
+   setTimeout(function() {
+    document.body.classList.remove("knocking");
+    knockSound.currentTime = 0;
+    knockSound.play();
+    document.body.classList.add("knocking");
+   }, 600);
+   setTimeout(function() {
+    document.body.classList.remove("knocking");
+   }, 1600);
+  }
+  let flicker = document.getElementById("flicker");
+  setInterval(function() {
+   let creep = Math.min(sanity, 100 - turn * 10);
+   if (start.style.display != "none" || Math.random() > (100 - creep) / 120) {
+    return;
+   }
+   flicker.style.opacity = "0.9";
+   setTimeout(function() { flicker.style.opacity = "0"; }, 90);
+   setTimeout(function() { flicker.style.opacity = "0.9"; }, 180);
+   setTimeout(function() { flicker.style.opacity = "0"; }, 260);
+  }, 4000);
    function jumpscare() {
    dark.style.display = "block";
    girl.style.display = "block";
