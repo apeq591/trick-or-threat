@@ -580,7 +580,7 @@
   let peeked = false;
   peephole.onclick = function() {
    view.style.display = "block";
-   if (waiting && visitors[turn].fake && peeked == false && turn >= 2) {
+   if (waiting && peeked == false && turn >= 2) {
     peeked = true;
     setTimeout(function() {
      visitor.src = "girl.png";
@@ -614,12 +614,19 @@
    setTimeout(function() {
     document.body.classList.remove("knocking");
    }, 1000);
+   if (turn == 5 && peeked == false) {
+    setTimeout(function() {
+     message.textContent = "The peephole opened by itself...";
+     peephole.onclick();
+    }, 1500);
+   }
   }
 
     let start = document.getElementById("start");
   let knockSound = new Audio("khemrajdotin%20%E2%80%93%20knock.mp3");
    let scream = new Audio("scream.mp3");
    let click = new Audio("click.mp3");
+   let creak = new Audio("creak.mp3");
    let heartbeat = new Audio("heartbeat.mp3");
    heartbeat.loop = true;
 
@@ -636,6 +643,10 @@
    click.play().then(function() {
     click.pause();
     click.currentTime = 0;
+   });
+   creak.play().then(function() {
+    creak.pause();
+    creak.currentTime = 0;
    });
    heartbeat.play().then(function() {
     heartbeat.pause();
@@ -717,10 +728,10 @@ let sanity = 100;
   }
    function updateHouse() {
    let creep = Math.min(sanity, 100 - turn * 10);
-   if (creep < 50 && heartbeat.paused) {
+   if (creep < 70 && heartbeat.paused) {
     heartbeat.play();
    }
-   if (creep < 25) {
+   if (creep < 40) {
     heartbeat.playbackRate = 1.5;
    }
    if (creep < 95) {
@@ -767,6 +778,8 @@ let sanity = 100;
    }
     bubble.style.display = "none";
    waiting = false;
+   creak.currentTime = 0;
+   creak.play();
    outsideimg.src = visitors[turn].face;
    document.getElementById("sweet").style.display = "none";
    outside.style.display = "block";
@@ -835,7 +848,7 @@ let sanity = 100;
      scared = true;
      setTimeout(jumpscare, 300);
      setTimeout(knock, 5500);
-    } else if (visitors[turn - 1].fake && light.style.opacity == "0.1" && Math.random() < 0.6) {
+    } else if (visitors[turn - 1].fake && light.style.opacity == "0.1") {
      setTimeout(bang, 1200);
      setTimeout(knock, 5000);
     } else {
@@ -846,12 +859,31 @@ let sanity = 100;
      clock.textContent = "12:00 AM";
      message.textContent = "MIDNIGHT. You survived!";
      setTimeout(function() {
+      knockSound.currentTime = 0;
+      knockSound.play();
+      message.textContent = "...one more knock?";
+     }, 1200);
+     setTimeout(function() {
+      scream.currentTime = 0;
+      scream.play();
+      dark.style.display = "block";
+      girl.style.display = "block";
+      girl.style.height = "260vh";
+      girl.style.left = "50%";
+      girl.style.bottom = "";
+      girl.style.top = "-10vh";
+      girl.style.transform = "translateX(-50%)";
+      girl.style.zIndex = "30";
+     }, 2600);
+     setTimeout(function() {
+      girl.style.display = "none";
+      dark.style.display = "none";
       document.getElementById("died").textContent = "YOU SURVIVED";
       document.getElementById("died").style.color = "orange";
       document.body.style.filter = "none";
       heartbeat.pause();
       document.getElementById("end").style.display = "flex";
-     }, 2500);
+     }, 3400);
     }, 3000);
    }
   }
@@ -873,7 +905,7 @@ let sanity = 100;
   let flicker = document.getElementById("flicker");
   setInterval(function() {
    let creep = Math.min(sanity, 100 - turn * 10);
-   if (start.style.display != "none" || Math.random() > (100 - creep) / 120) {
+   if (start.style.display != "none" || Math.random() > Math.max(0.35, (100 - creep) / 120)) {
     return;
    }
    flicker.style.opacity = "0.9";
