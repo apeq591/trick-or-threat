@@ -497,6 +497,7 @@
   <h1>Trick or Threat</h1>
   <h2 id="died">YOU DIED</h2>
   <button id="againbutton">PLAY AGAIN</button>
+  <p style="color: grey; font-size: 12px;">Made by Mukta. Pictures and sounds from Pixabay.</p>
  </div>
  <div id="vignette"></div>
    <div id="dark"></div>
@@ -619,13 +620,13 @@
   };
   let visitors = [
    { time: "7:00 PM", face: "vampire.png", says: "Trick or treat! I like your pumpkin!", fake: false },
-   { time: "7:40 PM", face: "witch.png", says: "Hi, I live next door. Can I come in and use your phone?", fake: true },
+   { time: "7:40 PM", face: "witch.png", says: "Hi, I live next door. Can I come in and use your phone?", fake: true, why: "The house next door is empty!" },
    { time: "8:20 PM", face: "ghost.png", says: "BOO! ...sorry, did I scare you?", fake: false },
-   { time: "9:00 PM", face: "skeleton.png", says: "It's me, Sam! I'm early, let me in.", fake: true },
+   { time: "9:00 PM", face: "skeleton.png", says: "It's me, Sam! I'm early, let me in.", fake: true, why: "Sam said 10, not 9!" },
    { time: "9:30 PM", face: "hero.png", says: "Trick or treat! My mum's waiting at the gate.", fake: false },
    { time: "10:00 PM", face: "skeleton.png", says: "Hey, it's Sam! Did your mum tell you I was coming?", fake: false },
-   { time: "10:45 PM", face: "clown.png", says: "Your mum said you'd give us the big bag of sweets.", fake: true },
-   { time: "11:30 PM", face: "ava.png", says: "It's me, Ava! Open up, it's freezing!", fake: true }
+   { time: "10:45 PM", face: "clown.png", says: "Your mum said you'd give us the big bag of sweets.", fake: true, why: "Nobody gets the big bag of sweets!" },
+   { time: "11:30 PM", face: "ava.png", says: "It's me, Ava! Open up, it's freezing!", fake: true, why: "Ava is in Spain this week!" }
   ];
   let turn = 0;
    let scareTurn = Math.floor(Math.random() * 5) + 2;
@@ -720,7 +721,7 @@ let sanity = 100;
     outside.style.display = "none";
    }, 2000);
    if (visitors[turn].fake) {
-    message.textContent = "That was NOT a kid... 😱";
+    message.textContent = "That was NOT a kid... 😱 " + visitors[turn].why;
     changeSanity(-35);
    } else {
     message.textContent = "You gave them some sweets 🍬";
@@ -740,7 +741,7 @@ let sanity = 100;
    toggle.style.transform = "scaleY(-1)";
    document.body.style.filter = "brightness(0.5)";
    if (visitors[turn].fake) {
-    message.textContent = "Phew. Whatever it was, it's gone.";
+    message.textContent = "Good call! " + visitors[turn].why;
    } else {
     message.textContent = "They walk away sadly...";
     changeSanity(-15);
@@ -767,6 +768,12 @@ let sanity = 100;
     setTimeout(function() {
      clock.textContent = "12:00 AM";
      message.textContent = "MIDNIGHT. You survived!";
+     setTimeout(function() {
+      document.getElementById("died").textContent = "YOU SURVIVED";
+      document.getElementById("died").style.color = "orange";
+      document.body.style.filter = "none";
+      document.getElementById("end").style.display = "flex";
+     }, 2500);
     }, 3000);
    }
   }
