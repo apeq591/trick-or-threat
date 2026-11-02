@@ -397,6 +397,17 @@
   animation: swing 0.6s;
   z-index: 2;
 }
+#sweet {
+  display: none;
+  position: absolute;
+  font-size: 36px;
+  transform: translate(-50%, -50%) rotate(-20deg);
+  animation: pop 0.5s;
+}
+@keyframes pop {
+  from { transform: translate(-50%, -50%) scale(0); }
+  to { transform: translate(-50%, -50%) rotate(-20deg) scale(1); }
+}
 #outsideimg {
   display: block;
   height: 290px;
@@ -511,7 +522,7 @@
   <div class="hinge" id="hinge1"></div>
 <div class="hinge" id="hinge2"></div>
 <div id="letterbox"><div id="eyes"></div></div>
-  <div id="outside"><img id="outsideimg" alt=""></div>
+  <div id="outside"><img id="outsideimg" alt=""><div id="sweet">🍬</div></div>
   <div id="peephole"></div>
   <div id="knob"></div>
   <div id="switch">
@@ -586,6 +597,7 @@
     let start = document.getElementById("start");
   let knockSound = new Audio("khemrajdotin%20%E2%80%93%20knock.mp3");
    let scream = new Audio("scream.mp3");
+   let click = new Audio("click.mp3");
 
   document.getElementById("startbutton").onclick = function() {
    start.style.display = "none";
@@ -596,6 +608,10 @@
     scream.play().then(function() {
     scream.pause();
     scream.currentTime = 0;
+   });
+   click.play().then(function() {
+    click.pause();
+    click.currentTime = 0;
    });
   };
    document.getElementById("againbutton").onclick = function() {
@@ -619,12 +635,12 @@
    }
   };
   let visitors = [
-   { time: "7:00 PM", face: "vampire.png", says: "Trick or treat! I like your pumpkin!", fake: false },
+   { time: "7:00 PM", face: "vampire.png", says: "Trick or treat! I like your pumpkin!", fake: false, hand: [165, 185] },
    { time: "7:40 PM", face: "witch.png", says: "Hi, I live next door. Can I come in and use your phone?", fake: true, why: "The house next door is empty!" },
-   { time: "8:20 PM", face: "ghost.png", says: "BOO! ...sorry, did I scare you?", fake: false },
+   { time: "8:20 PM", face: "ghost.png", says: "BOO! ...sorry, did I scare you?", fake: false, hand: [22, 168] },
    { time: "9:00 PM", face: "skeleton.png", says: "It's me, Sam! I'm early, let me in.", fake: true, why: "Sam said 10, not 9!" },
-   { time: "9:30 PM", face: "hero.png", says: "Trick or treat! My mum's waiting at the gate.", fake: false },
-   { time: "10:00 PM", face: "skeleton.png", says: "Hey, it's Sam! Did your mum tell you I was coming?", fake: false },
+   { time: "9:30 PM", face: "hero.png", says: "Trick or treat! My mum's waiting at the gate.", fake: false, hand: [40, 205] },
+   { time: "10:00 PM", face: "skeleton.png", says: "Hey, it's Sam! Did your mum tell you I was coming?", fake: false, hand: [45, 68] },
    { time: "10:45 PM", face: "clown.png", says: "Your mum said you'd give us the big bag of sweets.", fake: true, why: "Nobody gets the big bag of sweets!" },
    { time: "11:30 PM", face: "ava.png", says: "It's me, Ava! Open up, it's freezing!", fake: true, why: "Ava is in Spain this week!" }
   ];
@@ -671,38 +687,39 @@ let sanity = 100;
     updateHouse()
   }
    function updateHouse() {
-   if (sanity < 95) {
+   let creep = Math.min(sanity, 100 - turn * 10);
+   if (creep < 95) {
     table.style.transform = "rotate(4deg)";
    } else {
     table.style.transform = "";
    }
-   if (sanity < 85) {
+   if (creep < 85) {
     flame.style.display = "none";
    } else {
     flame.style.display = "block";
    }
-   if (sanity < 70) {
+   if (creep < 70) {
     eyes.style.display = "block";
     setTimeout(function() {
      eyes.style.display = "none";
     }, 5000);
    }
-   if (sanity < 60) {
+   if (creep < 60) {
     frame.style.transform = "rotate(-9deg)";
    } else {
     frame.style.transform = "";
    }
-   if (sanity < 50) {
+   if (creep < 50) {
     splat1.style.display = "block";
    } else {
     splat1.style.display = "none";
    }
-   if (sanity < 35) {
+   if (creep < 35) {
     face.style.display = "block";
    } else {
     face.style.display = "none";
    }
-   if (sanity < 20) {
+   if (creep < 20) {
     splat2.style.display = "block";
    } else {
     splat2.style.display = "none";
@@ -716,6 +733,7 @@ let sanity = 100;
     bubble.style.display = "none";
    waiting = false;
    outsideimg.src = visitors[turn].face;
+   document.getElementById("sweet").style.display = "none";
    outside.style.display = "block";
    setTimeout(function() {
     outside.style.display = "none";
@@ -725,6 +743,10 @@ let sanity = 100;
     changeSanity(-35);
    } else {
     message.textContent = "You gave them some sweets 🍬";
+    let sweet = document.getElementById("sweet");
+    sweet.style.left = visitors[turn].hand[0] + "px";
+    sweet.style.top = visitors[turn].hand[1] + "px";
+    sweet.style.display = "block";
     changeSanity(10);
    }
    next();
@@ -736,6 +758,8 @@ let sanity = 100;
    }
     bubble.style.display = "none";
    waiting = false;
+   click.currentTime = 0;
+   click.play();
    light.style.opacity = "0.1";
    light.style.animation = "none";
    toggle.style.transform = "scaleY(-1)";
@@ -757,6 +781,7 @@ let sanity = 100;
     return;
    }
    turn = turn + 1;
+   updateHouse();
    if (turn < visitors.length) {
      if (turn == scareTurn || (sanity < 50 && Math.random() < 0.5)) {
      setTimeout(jumpscare, 300);
